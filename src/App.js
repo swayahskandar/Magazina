@@ -1,25 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Home from './pages';
+import SigninPage from './pages/signin';
+import Continue from './pages/Continue';
+
+// import nousContact from './pages/nouContact';
+import { MovieDesc } from "./Components copy/MovieDescription/MovieDesc";
+import { moviesData } from "./Components copy/Moviesdata";
+import MovieApp from "./pages/MovieApp";
+
 function App() {
+  const [moviesList, setMoviesList] = useState(moviesData);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Switch>
+        <Route path='/' component={Home} exact />
+        <Route path='/signin' component={SigninPage} exact />
+        <Route path='/signed' component={Continue} exact /> 
+        <Route
+        exact
+        path="/movies"
+        render={() => (
+          <MovieApp moviesList={moviesList} setMoviesList={setMoviesList} />
+        )}
+      />
+
+      <Route
+        
+        path="/description/:movieId"
+        render={(props) => <MovieDesc moviesList={moviesList} {...props} />}
+        exact/>
+       {/* <Route path='/contact' component={nousContact} exact />  */}
+      </Switch>
+   
+    </Router>
+    
   );
 }
 
